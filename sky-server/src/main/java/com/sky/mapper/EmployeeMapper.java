@@ -18,6 +18,13 @@ public interface EmployeeMapper {
     @Select("select * from employee where username = #{username}")
     Employee getByUsername(String username);
 
+    /**
+     * 根据id查询员工信息
+     * @param id
+     * @return
+     */
+    @Select("select * from employee where id=#{id}")
+    Employee getById(Long id);
 
     /**
      * 插入员工数据
@@ -35,4 +42,10 @@ public interface EmployeeMapper {
      */
     // 复杂sql查询不适合用 注解式Mapper,适合用 Xml配置式Mapper
     Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+
+    /**
+     * 根据主键动态修改属性
+     * @param employee
+     */
+    void update(Employee employee);
 }
