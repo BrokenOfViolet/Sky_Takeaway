@@ -3,6 +3,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 guide-line/
+sky-server/src/main/resources/application-dev.yml
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
