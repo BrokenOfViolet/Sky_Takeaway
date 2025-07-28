@@ -11,6 +11,7 @@ import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.exception.SetmealEnableFailedException;
+import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
@@ -27,6 +28,8 @@ import java.util.List;
 
 @Service
 public class SetmealServiceImpl implements SetmealService {
+    @Autowired
+    private DishMapper dishMapper;
 
     @Autowired
     private SetmealMapper setmealMapper;
@@ -94,8 +97,9 @@ public class SetmealServiceImpl implements SetmealService {
     @Transactional
     public void updateSetmeal(SetmealDTO setmealDTO) {
         Setmeal setmeal = new Setmeal();
-
         BeanUtils.copyProperties(setmealDTO, setmeal);
+
+        setmealMapper.update(setmeal);
 
         Long setmealId = setmeal.getId();
 
@@ -107,5 +111,24 @@ public class SetmealServiceImpl implements SetmealService {
         });
 
         setmealDishMapper.insertBatch(setmealDishes);
+    }
+
+    public void startOrStop(Integer status, Long id) {
+        // 起售套餐时，如果套餐内有停售菜品，则抛出提示
+        if (status == StatusConstant.ENABLE) {
+            List<Dish> dishList = dishMapper.getBySetmealId(id);
+            if (dishList != null && dishList.size() > 0) {
+                dishList.forEach(dish -> {
+                    if (dish.getStatus() == StatusConstant.DISABLE) {
+                        throw new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
+                    }
+                });
+            }
+        }
+        Setmeal setmeal = Setmeal.builder()
+                .id(id)
+                .status(status)
+                .build();
+        setmealMapper.update(setmeal);
     }
 }
