@@ -34,12 +34,12 @@ public class ShopController {
 
     /**
      * 获取店铺营业状态
-     * @param status
      * @return
      */
     @GetMapping("/status")
     @ApiOperation("获取店铺营业状态")
-    public Result<Integer> getStatus(@RequestParam Integer status) {
+    public Result<Integer> getStatus() {
+        Integer status = (Integer) redisTemplate.opsForValue().get(KEY);
         log.info("获取店铺营业状态为: {}", status == 1 ? "营业中" : "打烊中");
         return Result.success(status);
     }
