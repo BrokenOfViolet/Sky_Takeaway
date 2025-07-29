@@ -103,6 +103,10 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+
+        // 映射本地文件夹 /opt/sky_take_out/uploads 到 http://localhost:8080/uploads/**
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:/opt/project/uploads/");
     }
 
     /**
@@ -118,4 +122,5 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         //将自己的消息转化器加入容器中
         converters.add(0,converter);
     }
+
 }

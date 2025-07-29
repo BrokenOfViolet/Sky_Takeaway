@@ -45,6 +45,9 @@ sky:
     access-key-id: ${sky.alioss.access-key-id}
     access-key-secret: ${sky.alioss.access-key-secret}
     bucket-name: ${sky.alioss.bucket-name}
+  upload:
+    dir: ${sky.upload.dir}
+    base-url: ${sky.upload.base-url}
   redis:
     host: ${sky.redis.host}
     port: ${sky.redis.port}
