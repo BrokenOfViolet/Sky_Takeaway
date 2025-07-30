@@ -1,10 +1,7 @@
 package com.sky.controller.admin;
 
-
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
-import com.sky.entity.Setmeal;
-import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetmealService;
@@ -13,13 +10,17 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 套餐管理
+ */
 @RestController
 @RequestMapping("/admin/setmeal")
-@Api(tags = "套餐管理")
+@Api(tags = "套餐相关接口")
 @Slf4j
 public class SetmealController {
 
@@ -28,45 +29,48 @@ public class SetmealController {
 
     /**
      * 新增套餐
+     *
      * @param setmealDTO
      * @return
      */
     @PostMapping
     @ApiOperation("新增套餐")
+    @CacheEvict(cacheNames = "setmealCache",key = "#setmealDTO.categoryId")//key: setmealCache::100
     public Result save(@RequestBody SetmealDTO setmealDTO) {
-        log.info("新增套餐：{}", setmealDTO);
-        setmealService.saveWithDishes(setmealDTO);
+        setmealService.saveWithDish(setmealDTO);
         return Result.success();
     }
 
-
     /**
-     * 套餐分页查询
+     * 分页查询
+     *
      * @param setmealPageQueryDTO
      * @return
      */
     @GetMapping("/page")
-    @ApiOperation("套餐分页查询")
+    @ApiOperation("分页查询")
     public Result<PageResult> page(SetmealPageQueryDTO setmealPageQueryDTO) {
         PageResult pageResult = setmealService.pageQuery(setmealPageQueryDTO);
         return Result.success(pageResult);
     }
 
     /**
-     * 套餐批量删除
+     * 批量删除套餐
+     *
      * @param ids
      * @return
      */
     @DeleteMapping
-    @ApiOperation("套餐批量删除")
+    @ApiOperation("批量删除套餐")
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true)
     public Result delete(@RequestParam List<Long> ids) {
-        log.info("套餐批量删除: {}", ids);
         setmealService.deleteBatch(ids);
         return Result.success();
     }
 
     /**
-     * 根据id查询套餐
+     * 根据id查询套餐，用于修改页面回显数据
+     *
      * @param id
      * @return
      */
@@ -78,27 +82,30 @@ public class SetmealController {
     }
 
     /**
-     * 编辑套餐
+     * 修改套餐
+     *
      * @param setmealDTO
      * @return
      */
     @PutMapping
-    @ApiOperation("编辑套餐")
+    @ApiOperation("修改套餐")
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true)
     public Result update(@RequestBody SetmealDTO setmealDTO) {
-        log.info("编辑套餐：{}", setmealDTO);
-        setmealService.updateSetmeal(setmealDTO);
+        setmealService.update(setmealDTO);
         return Result.success();
     }
 
     /**
      * 套餐起售停售
+     *
      * @param status
      * @param id
      * @return
      */
     @PostMapping("/status/{status}")
     @ApiOperation("套餐起售停售")
-    public Result startOrStop(@PathVariable Integer status, @RequestParam Long id) {
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true)
+    public Result startOrStop(@PathVariable Integer status, Long id) {
         setmealService.startOrStop(status, id);
         return Result.success();
     }

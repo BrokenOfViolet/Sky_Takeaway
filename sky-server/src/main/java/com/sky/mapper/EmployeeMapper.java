@@ -21,29 +21,20 @@ public interface EmployeeMapper {
     Employee getByUsername(String username);
 
     /**
-     * 根据id查询员工信息
-     * @param id
-     * @return
-     */
-    @Select("select * from employee where id=#{id}")
-    Employee getById(Long id);
-
-    /**
      * 插入员工数据
      * @param employee
      */
-    @Insert("insert into employee (name, username, password, phone, sex, id_number, create_time, update_time, create_user, update_user, status)" +
-            "values" +
-            "(#{name}, #{username}, #{password}, #{phone}, #{sex}, #{idNumber}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser}, #{status})")
+    @Insert("insert into employee (name, username, password, phone, sex, id_number, create_time, update_time, create_user, update_user,status) " +
+            "values " +
+            "(#{name},#{username},#{password},#{phone},#{sex},#{idNumber},#{createTime},#{updateTime},#{createUser},#{updateUser},#{status})")
     @AutoFill(value = OperationType.INSERT)
     void insert(Employee employee);
 
     /**
-     * 员工分页查询
+     * 分页查询
      * @param employeePageQueryDTO
      * @return
      */
-    // 复杂sql查询不适合用 注解式Mapper,适合用 Xml配置式Mapper
     Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 
     /**
@@ -52,4 +43,12 @@ public interface EmployeeMapper {
      */
     @AutoFill(value = OperationType.UPDATE)
     void update(Employee employee);
+
+    /**
+     * 根据id查询员工信息
+     * @param id
+     * @return
+     */
+    @Select("select * from employee where id = #{id}")
+    Employee getById(Long id);
 }

@@ -1,5 +1,6 @@
 package com.sky.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-@Builder // Builder()注解，可以链式设置对应值
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Employee implements Serializable {

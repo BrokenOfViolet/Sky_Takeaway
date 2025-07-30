@@ -30,13 +30,11 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     @Autowired
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
-
     @Autowired
     private JwtTokenUserInterceptor jwtTokenUserInterceptor;
 
     /**
      * 注册自定义拦截器
-     *
      * @param registry
      */
     protected void addInterceptors(InterceptorRegistry registry) {
@@ -51,13 +49,9 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .excludePathPatterns("/user/shop/status");
     }
 
-
-    /**
-     * 通过knife4j生成接口文档
-     * @return
-     */
     @Bean
     public Docket docket1(){
+        log.info("准备生成接口文档...");
         ApiInfo apiInfo = new ApiInfoBuilder()
                 .title("苍穹外卖项目接口文档")
                 .version("2.0")
@@ -78,6 +72,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     @Bean
     public Docket docket2(){
+        log.info("准备生成接口文档...");
         ApiInfo apiInfo = new ApiInfoBuilder()
                 .title("苍穹外卖项目接口文档")
                 .version("2.0")
@@ -97,20 +92,17 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     }
 
     /**
-     * 设置静态资源映射
+     * 设置静态资源映射，主要是访问接口文档（html、js、css）
      * @param registry
      */
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        log.info("开始设置静态资源映射...");
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-
-        // 映射本地文件夹 /opt/sky_take_out/uploads 到 http://localhost:8080/uploads/**
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:/opt/project/uploads/");
     }
 
     /**
-     * 扩展 Spring MVC 的消息转换器
+     * 扩展Spring MVC框架的消息转化器
      * @param converters
      */
     protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -122,5 +114,4 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         //将自己的消息转化器加入容器中
         converters.add(0,converter);
     }
-
 }

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * jwt令牌校验的拦截器
  */
-@Component // 标记为组件，供其他类或者方法Autowired注入
+@Component
 @Slf4j
 public class JwtTokenAdminInterceptor implements HandlerInterceptor {
 

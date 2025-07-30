@@ -17,12 +17,12 @@ public interface EmployeeService {
 
     /**
      * 新增员工
-     * @param employee
+     * @param employeeDTO
      */
-    void save(EmployeeDTO employee);
+    void save(EmployeeDTO employeeDTO);
 
     /**
-     * 员工分页查询
+     * 分页查询
      * @param employeePageQueryDTO
      * @return
      */
@@ -36,7 +36,7 @@ public interface EmployeeService {
     void startOrStop(Integer status, Long id);
 
     /**
-     * 根据id查询员工信息
+     * 根据id查询员工
      * @param id
      * @return
      */
