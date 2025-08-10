@@ -37,3 +37,8 @@ sky:
     admin-ttl: 7200000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+
+file:
+  storage: local # 设置为local为本地文件存储模式,设置为oss为阿里云oss上传
+  upload-dir: /opt/sky_take_out/uploads/        # 本地文件存储路径
+  access-url-prefix: http://localhost/uploads/  # Nginx 对外访问前缀
