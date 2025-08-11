@@ -9,14 +9,10 @@
         </foreach>
     </select>
 
-    <insert id="insert" parameterType="com.sky.entity.SetmealDish">
-        insert into setmeal_dish
-        <where>
-            <if test="setmealId != null">setmeal_id = #{setmealId}</if>
-            <if test="dishId != null">dish_id = #{dishId}</if>
-            <if test="name != null">name = #{name}</if>
-            <if test="price != null">price = #{price}</if>
-            <if test="copies != null">copies = #{copies}</if>
-        </where>
+    <insert id="insertBatch" parameterType="list">
+        insert into setmeal_dish (setmeal_id, dish_id, name, price, copies) VALUES
+        <foreach collection="setmealDishes" item="df" separator=",">
+            (#{df.setmealId},#{df.dishId},#{df.name},#{df.price},#{df.copies})
+        </foreach>
     </insert>
 </mapper>
