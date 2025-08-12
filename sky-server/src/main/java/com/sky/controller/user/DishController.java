@@ -46,6 +46,8 @@ public class DishController {
         dish.setStatus(StatusConstant.ENABLE);//查询起售中的菜品
         // 如果不在redis缓存中,则调用mysql数据库,并加入到redis缓存中
         list = dishService.listWithFlavor(dish);
+
+        log.info("Redis 缓存写入，key={}, value.size={}", key, list != null ? list.size() : 0);
         redisTemplate.opsForValue().set(key, list);
 
         return Result.success(list);
