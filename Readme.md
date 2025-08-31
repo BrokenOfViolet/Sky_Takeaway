@@ -34,3 +34,5 @@ mvn spring-boot:run
             proxy_pass   http://localhost:8080/admin/;  # 转发到后端服务
         }
 ```
+
+mp-weixin 以及 sky_admin_ui 分别是用户端和管理端前端代码(非源码), 可以直接使用, sky_admin_ui放在nginx.conf指定的目录下即可
